@@ -268,28 +268,29 @@
       color:#6b1f34;
       line-height:1.45;
     }
+
+    /* Ocultar el reproductor nativo para que uses tus botones */
+    audio{ display:none; }
   </style>
 </head>
 
 <body>
 
-  
-
-<audio id="musica" preload="auto" loop playsinline>
-  <source src="./cancion.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio HTML5.
-</audio>
-
-
-
-
-
+  <!-- Música SIN anuncios (MP3 en tu repo)
+       IMPORTANTÍSIMO:
+       1) El archivo DEBE llamarse EXACTAMENTE: cancion.mp3
+       2) Debe estar en la MISMA carpeta que este index.html
+  -->
+  <audio id="musica" preload="auto" loop playsinline>
+    <source src="./cancion.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
 
   <!-- Overlay si el navegador bloquea el autoplay -->
   <div class="audioOverlay" id="audioOverlay">
     <div class="audioCard">
       <h2>🎵 Activar música</h2>
-      <p>Toca la pantalla.</p>
+      <p>Tu navegador requiere un toque para permitir audio. Presiona reproducir.</p>
       <button class="btn" onclick="activarMusicaDesdeOverlay()">Reproducir música</button>
       <button class="btn btn-sec" onclick="cerrarOverlay()">Continuar sin música</button>
     </div>
@@ -337,7 +338,6 @@
     <div class="card">
       <h2>Nuestras fotos</h2>
 
-      <!-- Nota: los nombres van URL-encoded para que SIEMPRE carguen en web -->
       <div class="grid">
         <figure class="foto">
           <img src="WhatsApp%20Image%202026-02-10%20at%208.35.10%20PM%20(4).jpeg" alt="Foto 1">
@@ -403,7 +403,7 @@
       <p style="font-weight:900; color:#6b1f34; line-height:1.45; margin: 10px 0;">
         Me hiciste el día.
         <br>
-        <span class="etiqueta">Mándame una captura de lo que elegiste,TE amo mi pukka 💌</span>
+        <span class="etiqueta">Mándame una captura de lo que elegiste, TE amo mi pukka 💌</span>
       </p>
       <button class="btn" onclick="cerrarFinal()">⬅️ Volver a la página</button>
     </div>
@@ -424,7 +424,7 @@
     }
     setInterval(crearCorazon, 260);
 
-    // ======== Música (MP3, sin anuncios) ========
+    // ======== Música (MP3 en tu repo, sin anuncios) ========
     const musica = document.getElementById("musica");
     const overlay = document.getElementById("audioOverlay");
 
@@ -442,7 +442,6 @@
       musica.play().then(() => {
         overlay.style.display = "none";
       }).catch(() => {
-       
         overlay.style.display = "flex";
       });
     }
@@ -451,17 +450,19 @@
       overlay.style.display = "none";
     }
 
-
+    // Intento suave al cargar (puede ser bloqueado, es normal)
     window.addEventListener("load", () => {
-     
-      musica.play().then(() => {
-       
-      }).catch(() => {
+      musica.play().catch(() => {
         overlay.style.display = "flex";
       });
     });
 
-    
+    // Plan B: primer click habilita audio (muy importante en móviles)
+    document.addEventListener("click", () => {
+      if (musica.paused) musica.play().catch(()=>{});
+    }, { once:true });
+
+    // ======== Modal citas ========
     function abrirModal(tipo){
       let contenido = "";
 
@@ -509,7 +510,7 @@
       document.getElementById("modal").style.display = "none";
     }
 
-   
+    // ======== Botón NO que se mueve ========
     const btnNo = document.getElementById("btnNo");
     const mensajeNo = document.getElementById("mensajeNo");
 
@@ -523,14 +524,10 @@
     btnNo.addEventListener("mouseenter", moverNo);
     btnNo.addEventListener("click", moverNo);
 
+    // ======== Aceptar + pantalla final ========
     function aceptar(){
-     
       reproducirMusica();
-
-      
       document.getElementById("finalFondo").style.display = "flex";
-
-      
       for(let i=0; i<26; i++){
         setTimeout(crearCorazon, i*35);
       }
@@ -543,6 +540,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
