@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>💘 Feliz San Valentín</title>
+  <style>
+    :root{
+      --rosa:#ff4d6d;
+      --vino:#c9184a;
+      --fondo1:#ffe5ec;
+      --fondo2:#fff0f3;
+      --texto:#2b2b2b;
+      --tarjeta:#ffffffcc;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--texto);
+      background: radial-gradient(circle at top, var(--fondo2), var(--fondo1));
+      overflow:hidden;
+    }
+
+    /* Corazones flotando */
+    .corazon{
+      position:absolute;
+      top:-10vh;
+      font-size:22px;
+      opacity:.75;
+      animation: caer linear infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+      user-select:none;
+      pointer-events:none;
+    }
+    @keyframes caer{
+      to{
+        transform: translateY(120vh) rotate(360deg);
+        opacity:.2;
+      }
+    }
+
+    .tarjeta{
+      width:min(540px, 92vw);
+      background:var(--tarjeta);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.6);
+      border-radius:22px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.18);
+      padding:28px 22px;
+      text-align:center;
+      position:relative;
+    }
+
+    .sello{
+      width:76px;
+      height:76px;
+      margin:0 auto 10px auto;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      background: linear-gradient(135deg, var(--rosa), var(--vino));
+      color:white;
+      font-size:34px;
+      box-shadow: 0 12px 24px rgba(201,24,74,.35);
+      animation: latido 1.2s infinite;
+    }
+
+    @keyframes latido{
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    h1{
+      margin:8px 0 8px 0;
+      font-size: clamp(26px, 3.3vw, 36px);
+      color: var(--vino);
+    }
+
+    p{
+      margin: 8px 0;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .chip{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.06);
+      margin-top:12px;
+      font-weight:600;
+    }
+
+    .botones{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:12px 16px;
+      font-weight:700;
+      transition:.2s transform, .2s box-shadow;
+    }
+
+    .btn-principal{
+      background: linear-gradient(135deg, var(--rosa), var(--vino));
+      color:white;
+      box-shadow: 0 12px 26px rgba(201,24,74,.35);
+    }
+    .btn-secundario{
+      background:white;
+      color:var(--vino);
+      border:1px solid rgba(201,24,74,.25);
+    }
+
+    button:hover{ transform: translateY(-2px); }
+    button:active{ transform: translateY(0px); }
+
+    .mensaje{
+      margin-top:14px;
+      font-weight:700;
+      color: var(--vino);
+      min-height: 24px;
+    }
+
+    footer{
+      margin-top:10px;
+      font-size:12px;
+      opacity:.7;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Tarjeta principal -->
+  <main class="tarjeta" role="main" aria-label="Tarjeta de San Valentín">
+    <div class="sello" aria-hidden="true">💘</div>
+    <h1>Feliz San Valentín</h1>
+    <p>
+      Hoy quería recordarte algo simple:
+      <strong>eres muy especial</strong> 🌹
+    </p>
+
+    <div class="chip">Para: <span id="para">Tu persona favorita</span> 💌</div>
+
+    <div class="botones">
+      <button class="btn-principal" id="btnMensaje">Abrir mensaje</button>
+      <button class="btn-secundario" id="btnNombre">Cambiar nombre</button>
+    </div>
+
+    <div class="mensaje" id="mensaje"></div>
+
+    <footer>Hecho con cariño ✨</footer>
+  </main>
+
+  <script>
+    // Crear corazones flotando
+    const emojis = ["💗","💖","💘","💝","💞","❤️"];
+    function crearCorazon(){
+      const h = document.createElement("div");
+      h.className = "corazon";
+      h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      h.style.left = Math.random()*100 + "vw";
+      h.style.animationDuration = (4 + Math.random()*4) + "s";
+      h.style.fontSize = (18 + Math.random()*18) + "px";
+      document.body.appendChild(h);
+
+      setTimeout(()=> h.remove(), 9000);
+    }
+    setInterval(crearCorazon, 250);
+
+    // Mensajes al azar
+    const mensajes = [
+      "Gracias por existir. 💐",
+      "Eres mi razón para sonreír hoy. 😊",
+      "Que tu día sea tan bonito como tu corazón. 💖",
+      "Si pudiera, te daría un abrazo gigante ahora mismo. 🤗",
+      "Te pienso con cariño. 🌹"
+    ];
+
+    const elMensaje = document.getElementById("mensaje");
+    document.getElementById("btnMensaje").addEventListener("click", () => {
+      elMensaje.textContent = mensajes[Math.floor(Math.random()*mensajes.length)];
+    });
+
+    // Cambiar nombre
+    const elPara = document.getElementById("para");
+    document.getElementById("btnNombre").addEventListener("click", () => {
+      const nuevo = prompt("¿Para quién es la tarjeta? (Escribe un nombre)");
+      if(nuevo && nuevo.trim().length > 0){
+        elPara.textContent = nuevo.trim();
+      }
+    });
+  </script>
+</body>
+</html>
